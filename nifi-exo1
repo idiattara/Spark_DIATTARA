@@ -15,7 +15,7 @@ Générer des données au format suivant avec le processeur GenerateFlowFile :
     "spec": {
       "timestamp": "${now():format('yyyy-MM-dd_HHmmss')}"
     }
-  
+  }
 ]
 
 4 Si   destination=local renommer votre fichier au format local_ yyyy-MM-dd_HHmmSS.json sinon metter dans kafka un json qui contiendra le nom du  client la ville  et le timestamp
