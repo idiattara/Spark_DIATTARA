@@ -1,0 +1,50 @@
+PUT /_index_template/template_diattara
+{
+   "index_patterns":"diattara*",
+   "template":{
+      "settings":{
+        "number_of_shards": 3,
+        "number_of_replicas": 2
+      },
+      "mappings":{
+        "properties":{
+           "location":{
+              "type":"geo_point"
+           },
+           "prix":{
+              "type":"long"
+           },
+           
+           "typeproduit" : {
+          "type" : "text",
+          "fields" : {
+            "keyword" : {
+              "type" : "keyword",
+              "ignore_above" : 256
+            }
+          }
+        },
+		"agent_timestamp": {
+          "type": "date",
+        "format": "yyyy-MM-dd_HHmmss||strict_date_time||strict_date_optional_time||epoch_millis||strict_date_optional_time_nanos"
+       }
+        } 
+   }
+   }
+   }
+   
+   DELETE diattara1
+  
+   POST /diattara1/_doc
+   {
+     "location":"14.76, -14.76",
+     "typeProduit":"cocaccccccccccccccccccccccccccc",
+     "price":100,
+     "agent_timestamp":"2024-07-16T15:46:56Z"
+   }
+   
+   ${now():format("yyyy-MM-dd'T'HH:mm:ss'Z'", "GMT")}
+   
+   http://clustersdaelatsic.eastus.cloudapp.azure.com:9200/diattara1/_mapping?pretty
+   
+   http://clustersdaelatsic.eastus.cloudapp.azure.com:9200/diattara1/_search?pretty
