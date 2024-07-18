@@ -10,7 +10,7 @@ document_to_index = {
 }
 
 # Nom de l'index
-index_name = "diattara1"  # Vous pouvez remplacer "ibrahima_1" par "prenom_chiffre_1"
+index_name = "index_name"  
 
 # URL Elasticsearch avec authentification basique
 url = "http://hostname:9200/" + index_name + "/_doc"
