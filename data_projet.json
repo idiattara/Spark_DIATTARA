@@ -1,0 +1,20 @@
+{
+   "data":[
+      {
+         "confort":"standard",
+         "prix_base_per_km":2,
+         "properties-client":{
+            "logitude":2.3522,
+            "latitude":48.8566,
+            "nomclient":"FALL",
+            "telephoneClient":"060786575"
+         },
+         "properties-driver":{
+            "logitude":3.7038,
+            "latitude":40.4168,
+            "nomDriver":"DIOP",
+            "telephoneDriver":"0760786575"
+         }
+      }
+   ]
+}
