@@ -1,0 +1,502 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<template encoding-version="1.3">
+    <description></description>
+    <groupId>e191908d-018a-1000-7d6b-54a18133310d</groupId>
+    <name>GCP_TEMP</name>
+    <snippet>
+        <processGroups>
+            <id>4219a1a5-0741-3d8a-0000-000000000000</id>
+            <parentGroupId>ed041149-1b60-3d8e-0000-000000000000</parentGroupId>
+            <position>
+                <x>0.0</x>
+                <y>0.0</y>
+            </position>
+            <comments></comments>
+            <contents>
+                <connections>
+                    <id>3649714a-eddb-3f9e-0000-000000000000</id>
+                    <parentGroupId>4219a1a5-0741-3d8a-0000-000000000000</parentGroupId>
+                    <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                    <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                    <bends>
+                        <x>813.0</x>
+                        <y>311.0</y>
+                    </bends>
+                    <bends>
+                        <x>813.0</x>
+                        <y>361.0</y>
+                    </bends>
+                    <destination>
+                        <groupId>4219a1a5-0741-3d8a-0000-000000000000</groupId>
+                        <id>8677e09e-0b4c-3d7b-0000-000000000000</id>
+                        <type>PROCESSOR</type>
+                    </destination>
+                    <flowFileExpiration>0 sec</flowFileExpiration>
+                    <labelIndex>1</labelIndex>
+                    <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                    <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                    <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                    <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                    <name></name>
+                    <selectedRelationships>failure</selectedRelationships>
+                    <source>
+                        <groupId>4219a1a5-0741-3d8a-0000-000000000000</groupId>
+                        <id>8677e09e-0b4c-3d7b-0000-000000000000</id>
+                        <type>PROCESSOR</type>
+                    </source>
+                    <zIndex>0</zIndex>
+                </connections>
+                <connections>
+                    <id>e4543a8f-6653-34c5-0000-000000000000</id>
+                    <parentGroupId>4219a1a5-0741-3d8a-0000-000000000000</parentGroupId>
+                    <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                    <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                    <destination>
+                        <groupId>4219a1a5-0741-3d8a-0000-000000000000</groupId>
+                        <id>8677e09e-0b4c-3d7b-0000-000000000000</id>
+                        <type>PROCESSOR</type>
+                    </destination>
+                    <flowFileExpiration>0 sec</flowFileExpiration>
+                    <labelIndex>1</labelIndex>
+                    <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                    <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                    <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                    <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                    <name></name>
+                    <selectedRelationships>success</selectedRelationships>
+                    <source>
+                        <groupId>4219a1a5-0741-3d8a-0000-000000000000</groupId>
+                        <id>f05567cd-7845-3384-0000-000000000000</id>
+                        <type>PROCESSOR</type>
+                    </source>
+                    <zIndex>0</zIndex>
+                </connections>
+                <controllerServices>
+                    <id>c19fbd32-3017-31fb-0000-000000000000</id>
+                    <parentGroupId>4219a1a5-0741-3d8a-0000-000000000000</parentGroupId>
+                    <bulletinLevel>WARN</bulletinLevel>
+                    <bundle>
+                        <artifact>nifi-gcp-nar</artifact>
+                        <group>org.apache.nifi</group>
+                        <version>1.23.2</version>
+                    </bundle>
+                    <comments></comments>
+                    <descriptors>
+                        <entry>
+                            <key>application-default-credentials</key>
+                            <value>
+<name>application-default-credentials</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>compute-engine-credentials</key>
+                            <value>
+<name>compute-engine-credentials</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>service-account-json-file</key>
+                            <value>
+<name>service-account-json-file</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>service-account-json</key>
+                            <value>
+<name>service-account-json</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>proxy-configuration-service</key>
+                            <value>
+<identifiesControllerService>org.apache.nifi.proxy.ProxyConfigurationService</identifiesControllerService>
+<name>proxy-configuration-service</name>
+                            </value>
+                        </entry>
+                    </descriptors>
+                    <name>GCPCredentialsControllerService_DIATTARA</name>
+                    <persistsState>false</persistsState>
+                    <properties>
+                        <entry>
+                            <key>application-default-credentials</key>
+                            <value>false</value>
+                        </entry>
+                        <entry>
+                            <key>compute-engine-credentials</key>
+                            <value>false</value>
+                        </entry>
+                        <entry>
+                            <key>service-account-json-file</key>
+                        </entry>
+                        <entry>
+                            <key>service-account-json</key>
+                        </entry>
+                        <entry>
+                            <key>proxy-configuration-service</key>
+                        </entry>
+                    </properties>
+                    <state>ENABLED</state>
+                    <type>org.apache.nifi.processors.gcp.credentials.service.GCPCredentialsControllerService</type>
+                </controllerServices>
+                <processors>
+                    <id>8677e09e-0b4c-3d7b-0000-000000000000</id>
+                    <parentGroupId>4219a1a5-0741-3d8a-0000-000000000000</parentGroupId>
+                    <position>
+                        <x>344.0</x>
+                        <y>272.0</y>
+                    </position>
+                    <bundle>
+                        <artifact>nifi-gcp-nar</artifact>
+                        <group>org.apache.nifi</group>
+                        <version>1.23.2</version>
+                    </bundle>
+                    <config>
+                        <backoffMechanism>PENALIZE_FLOWFILE</backoffMechanism>
+                        <bulletinLevel>WARN</bulletinLevel>
+                        <comments></comments>
+                        <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+                        <descriptors>
+                            <entry>
+<key>gcp-project-id</key>
+<value>
+    <name>gcp-project-id</name>
+</value>
+                            </entry>
+                            <entry>
+<key>GCP Credentials Provider Service</key>
+<value>
+    <identifiesControllerService>org.apache.nifi.gcp.credentials.service.GCPCredentialsService</identifiesControllerService>
+    <name>GCP Credentials Provider Service</name>
+</value>
+                            </entry>
+                            <entry>
+<key>gcp-retry-count</key>
+<value>
+    <name>gcp-retry-count</name>
+</value>
+                            </entry>
+                            <entry>
+<key>gcp-proxy-host</key>
+<value>
+    <name>gcp-proxy-host</name>
+</value>
+                            </entry>
+                            <entry>
+<key>gcp-proxy-port</key>
+<value>
+    <name>gcp-proxy-port</name>
+</value>
+                            </entry>
+                            <entry>
+<key>gcp-proxy-user-name</key>
+<value>
+    <name>gcp-proxy-user-name</name>
+</value>
+                            </entry>
+                            <entry>
+<key>gcp-proxy-user-password</key>
+<value>
+    <name>gcp-proxy-user-password</name>
+</value>
+                            </entry>
+                            <entry>
+<key>proxy-configuration-service</key>
+<value>
+    <identifiesControllerService>org.apache.nifi.proxy.ProxyConfigurationService</identifiesControllerService>
+    <name>proxy-configuration-service</name>
+</value>
+                            </entry>
+                            <entry>
+<key>storage-api-url</key>
+<value>
+    <name>storage-api-url</name>
+</value>
+                            </entry>
+                            <entry>
+<key>gcs-bucket</key>
+<value>
+    <name>gcs-bucket</name>
+</value>
+                            </entry>
+                            <entry>
+<key>gcs-key</key>
+<value>
+    <name>gcs-key</name>
+</value>
+                            </entry>
+                            <entry>
+<key>gcs-content-type</key>
+<value>
+    <name>gcs-content-type</name>
+</value>
+                            </entry>
+                            <entry>
+<key>gcs-object-md5</key>
+<value>
+    <name>gcs-object-md5</name>
+</value>
+                            </entry>
+                            <entry>
+<key>gcs-object-crc32c</key>
+<value>
+    <name>gcs-object-crc32c</name>
+</value>
+                            </entry>
+                            <entry>
+<key>gcs-object-acl</key>
+<value>
+    <name>gcs-object-acl</name>
+</value>
+                            </entry>
+                            <entry>
+<key>gcs-server-side-encryption-key</key>
+<value>
+    <name>gcs-server-side-encryption-key</name>
+</value>
+                            </entry>
+                            <entry>
+<key>gcs-overwrite-object</key>
+<value>
+    <name>gcs-overwrite-object</name>
+</value>
+                            </entry>
+                            <entry>
+<key>gcs-content-disposition-type</key>
+<value>
+    <name>gcs-content-disposition-type</name>
+</value>
+                            </entry>
+                            <entry>
+<key>gzip.content.enabled</key>
+<value>
+    <name>gzip.content.enabled</name>
+</value>
+                            </entry>
+                        </descriptors>
+                        <executionNode>ALL</executionNode>
+                        <lossTolerant>false</lossTolerant>
+                        <maxBackoffPeriod>10 mins</maxBackoffPeriod>
+                        <penaltyDuration>30 sec</penaltyDuration>
+                        <properties>
+                            <entry>
+<key>gcp-project-id</key>
+<value>sda-2024-430916</value>
+                            </entry>
+                            <entry>
+<key>GCP Credentials Provider Service</key>
+<value>c19fbd32-3017-31fb-0000-000000000000</value>
+                            </entry>
+                            <entry>
+<key>gcp-retry-count</key>
+<value>6</value>
+                            </entry>
+                            <entry>
+<key>gcp-proxy-host</key>
+                            </entry>
+                            <entry>
+<key>gcp-proxy-port</key>
+                            </entry>
+                            <entry>
+<key>gcp-proxy-user-name</key>
+                            </entry>
+                            <entry>
+<key>gcp-proxy-user-password</key>
+                            </entry>
+                            <entry>
+<key>proxy-configuration-service</key>
+                            </entry>
+                            <entry>
+<key>storage-api-url</key>
+                            </entry>
+                            <entry>
+<key>gcs-bucket</key>
+<value>ibrahima</value>
+                            </entry>
+                            <entry>
+<key>gcs-key</key>
+<value>${filename}</value>
+                            </entry>
+                            <entry>
+<key>gcs-content-type</key>
+<value>${mime.type}</value>
+                            </entry>
+                            <entry>
+<key>gcs-object-md5</key>
+                            </entry>
+                            <entry>
+<key>gcs-object-crc32c</key>
+                            </entry>
+                            <entry>
+<key>gcs-object-acl</key>
+                            </entry>
+                            <entry>
+<key>gcs-server-side-encryption-key</key>
+                            </entry>
+                            <entry>
+<key>gcs-overwrite-object</key>
+<value>true</value>
+                            </entry>
+                            <entry>
+<key>gcs-content-disposition-type</key>
+                            </entry>
+                            <entry>
+<key>gzip.content.enabled</key>
+<value>true</value>
+                            </entry>
+                        </properties>
+                        <retryCount>10</retryCount>
+                        <runDurationMillis>0</runDurationMillis>
+                        <schedulingPeriod>0 sec</schedulingPeriod>
+                        <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                        <yieldDuration>1 sec</yieldDuration>
+                    </config>
+                    <executionNodeRestricted>false</executionNodeRestricted>
+                    <name>PutGCSObject</name>
+                    <relationships>
+                        <autoTerminate>false</autoTerminate>
+                        <name>failure</name>
+                        <retry>false</retry>
+                    </relationships>
+                    <relationships>
+                        <autoTerminate>true</autoTerminate>
+                        <name>success</name>
+                        <retry>false</retry>
+                    </relationships>
+                    <state>RUNNING</state>
+                    <style/>
+                    <type>org.apache.nifi.processors.gcp.storage.PutGCSObject</type>
+                </processors>
+                <processors>
+                    <id>f05567cd-7845-3384-0000-000000000000</id>
+                    <parentGroupId>4219a1a5-0741-3d8a-0000-000000000000</parentGroupId>
+                    <position>
+                        <x>328.0</x>
+                        <y>-16.0</y>
+                    </position>
+                    <bundle>
+                        <artifact>nifi-standard-nar</artifact>
+                        <group>org.apache.nifi</group>
+                        <version>1.23.2</version>
+                    </bundle>
+                    <config>
+                        <backoffMechanism>PENALIZE_FLOWFILE</backoffMechanism>
+                        <bulletinLevel>WARN</bulletinLevel>
+                        <comments></comments>
+                        <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+                        <descriptors>
+                            <entry>
+<key>File Size</key>
+<value>
+    <name>File Size</name>
+</value>
+                            </entry>
+                            <entry>
+<key>Batch Size</key>
+<value>
+    <name>Batch Size</name>
+</value>
+                            </entry>
+                            <entry>
+<key>Data Format</key>
+<value>
+    <name>Data Format</name>
+</value>
+                            </entry>
+                            <entry>
+<key>Unique FlowFiles</key>
+<value>
+    <name>Unique FlowFiles</name>
+</value>
+                            </entry>
+                            <entry>
+<key>generate-ff-custom-text</key>
+<value>
+    <name>generate-ff-custom-text</name>
+</value>
+                            </entry>
+                            <entry>
+<key>character-set</key>
+<value>
+    <name>character-set</name>
+</value>
+                            </entry>
+                            <entry>
+<key>mime-type</key>
+<value>
+    <name>mime-type</name>
+</value>
+                            </entry>
+                            <entry>
+<key>filename</key>
+<value>
+    <name>filename</name>
+</value>
+                            </entry>
+                        </descriptors>
+                        <executionNode>ALL</executionNode>
+                        <lossTolerant>false</lossTolerant>
+                        <maxBackoffPeriod>10 mins</maxBackoffPeriod>
+                        <penaltyDuration>30 sec</penaltyDuration>
+                        <properties>
+                            <entry>
+<key>File Size</key>
+<value>0B</value>
+                            </entry>
+                            <entry>
+<key>Batch Size</key>
+<value>1</value>
+                            </entry>
+                            <entry>
+<key>Data Format</key>
+<value>Text</value>
+                            </entry>
+                            <entry>
+<key>Unique FlowFiles</key>
+<value>false</value>
+                            </entry>
+                            <entry>
+<key>generate-ff-custom-text</key>
+<value>{"typeproduit": "boison","prix": 12,"location": "1.729,73.9422"}
+{"typeproduit": "elec","prix": 10,"location": "3.789,70.9422"}</value>
+                            </entry>
+                            <entry>
+<key>character-set</key>
+<value>UTF-8</value>
+                            </entry>
+                            <entry>
+<key>mime-type</key>
+                            </entry>
+                            <entry>
+<key>filename</key>
+<value>${now():format('yyyyMMdd_HHmmSS')}.json</value>
+                            </entry>
+                        </properties>
+                        <retryCount>10</retryCount>
+                        <runDurationMillis>0</runDurationMillis>
+                        <schedulingPeriod>1 min</schedulingPeriod>
+                        <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                        <yieldDuration>1 sec</yieldDuration>
+                    </config>
+                    <executionNodeRestricted>false</executionNodeRestricted>
+                    <name>GenerateFlowFile</name>
+                    <relationships>
+                        <autoTerminate>false</autoTerminate>
+                        <name>success</name>
+                        <retry>false</retry>
+                    </relationships>
+                    <state>RUNNING</state>
+                    <style/>
+                    <type>org.apache.nifi.processors.standard.GenerateFlowFile</type>
+                </processors>
+            </contents>
+            <defaultBackPressureDataSizeThreshold>1 GB</defaultBackPressureDataSizeThreshold>
+            <defaultBackPressureObjectThreshold>10000</defaultBackPressureObjectThreshold>
+            <defaultFlowFileExpiration>0 sec</defaultFlowFileExpiration>
+            <flowfileConcurrency>UNBOUNDED</flowfileConcurrency>
+            <flowfileOutboundPolicy>STREAM_WHEN_AVAILABLE</flowfileOutboundPolicy>
+            <name>TEST_GCP</name>
+            <variables/>
+        </processGroups>
+    </snippet>
+    <timestamp>07/29/2024 19:53:32 CEST</timestamp>
+</template>
