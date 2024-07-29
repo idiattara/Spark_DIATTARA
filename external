@@ -1,0 +1,2 @@
+CREATE EXTERNAL TABLE `sda-2024-430916.mydataset.myext`
+OPTIONS(format = 'NEWLINE_DELIMITED_JSON',uris=['gs://ibrahima/*.json']);
