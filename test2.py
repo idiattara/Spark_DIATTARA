@@ -59,19 +59,16 @@ if flowFile is not None:
 
             # Préparer les arguments de la fonction (colonnes + éventuels args)
             function_args = [json_data[col] for col in columns] + args
-            
-            # Vérifier le nombre d'arguments attendus par la fonction
-            import inspect
-            sig = inspect.signature(rule_function)
-            num_params = len(sig.parameters)
 
             # Appeler la fonction dynamiquement avec ou sans argument
-            if num_params == 0:
-                if rule_function() and not args:  # Appel sans arguments
+            if args:
+                # Si `args` n'est pas vide, appeler la fonction avec des arguments
+                if rule_function(*function_args):
                     resultat = True
                     break
             else:
-                if rule_function(*function_args):  # Appel avec arguments
+                # Si `args` est vide, appeler la fonction sans arguments
+                if rule_function():
                     resultat = True
                     break
 
