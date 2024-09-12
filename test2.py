@@ -19,15 +19,8 @@ if flowFile is not None:
         inputStream.close()
 
         # Convertir le contenu du flowFile (JSON string) en dictionnaire Python
-        try:
-            json_data = json.loads(input_text)
-        except json.JSONDecodeError as e:
-            raise ValueError("Le contenu du flowFile n'est pas un JSON valide: " + str(e))
-
-        # Vérification que json_data est bien un dictionnaire
-        if not isinstance(json_data, dict):
-            raise ValueError(f"Le contenu JSON attendu est un dictionnaire, mais reçu: {type(json_data)}")
-
+        json_data = json.loads(input_text)
+        
         # Lire l'attribut 'patternprocess' (liste de fonctions avec colonnes et éventuellement des arguments)
         rule_list_str = flowFile.getAttribute("patternprocess").strip()
 
@@ -61,21 +54,26 @@ if flowFile is not None:
                 else:
                     columns.append(part)
 
-            # Vérification que chaque colonne existe dans json_data
-            for col in columns:
-                if col not in json_data:
-                    raise KeyError(f"Colonne '{col}' non trouvée dans json_data")
-
             # Extraire dynamiquement la fonction depuis la classe FunctionClass
             rule_function = getattr(FunctionClass, function_name)
 
             # Préparer les arguments de la fonction (colonnes + éventuels args)
             function_args = [json_data[col] for col in columns] + args
+            
+            # Vérifier le nombre d'arguments attendus par la fonction
+            import inspect
+            sig = inspect.signature(rule_function)
+            num_params = len(sig.parameters)
 
             # Appeler la fonction dynamiquement avec ou sans argument
-            if rule_function(*function_args):  # Si la fonction retourne True
-                resultat = True
-                break  # On s'arrête dès que True est trouvé
+            if num_params == 0:
+                if rule_function() and not args:  # Appel sans arguments
+                    resultat = True
+                    break
+            else:
+                if rule_function(*function_args):  # Appel avec arguments
+                    resultat = True
+                    break
 
         # Convertir le résultat en 1 ou 0
         resultat_numeric = 1 if resultat else 0
