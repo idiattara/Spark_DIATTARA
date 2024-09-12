@@ -18,21 +18,21 @@ if flowFile is not None:
         input_text = IOUtils.toString(inputStream, StandardCharsets.UTF_8)
         inputStream.close()
 
-        # Vérifier le contenu brut pour s'assurer que c'est bien une chaîne JSON
+        # Afficher le contenu brut pour s'assurer qu'il est correct
         log.info(f"Contenu brut du flowFile: {input_text}")
 
-        # Convertir le contenu du flowFile (JSON string) en dictionnaire Python
-        try:
-            json_data = json.loads(input_text)
-            log.info(f"Type de json_data après json.loads: {type(json_data)}")
-        except json.JSONDecodeError as e:
-            raise ValueError("Le contenu du flowFile n'est pas un JSON valide: " + str(e))
+        # Nettoyer les espaces autour et les caractères invisibles
+        input_text_cleaned = input_text.strip()
 
-        # Vérification que json_data est bien un dictionnaire
+        # Convertir le contenu en dictionnaire Python
+        json_data = json.loads(input_text_cleaned)
+        log.info(f"Type de json_data après json.loads: {type(json_data)}")
+
+        # Vérifier que json_data est bien un dictionnaire
         if not isinstance(json_data, dict):
             raise ValueError(f"Le contenu JSON attendu est un dictionnaire, mais reçu: {type(json_data)}")
 
-        # Lire l'attribut 'patternprocess' (liste de fonctions avec colonnes et éventuellement des arguments)
+        # Le reste du code pour appliquer les règles
         rule_list_str = flowFile.getAttribute("patternprocess").strip()
 
         # Supprimer les crochets [ et ] et diviser la chaîne par les virgules
@@ -46,7 +46,6 @@ if flowFile is not None:
 
         # Itérer sur chaque règle dans la liste
         for rule_str in rule_list:
-            # Séparer la règle en fonction, colonnes, et potentiellement des arguments
             rule_parts = rule_str.split('@')
             function_name = rule_parts[0]  # Nom de la fonction
             
@@ -89,7 +88,7 @@ if flowFile is not None:
         
         # Transférer le flowFile au succès
         session.transfer(flowFile, REL_SUCCESS)
-    
+
     except Exception as e:
         log.error("Erreur dans le traitement du flowFile : " + str(e))
         session.transfer(flowFile, REL_FAILURE)
