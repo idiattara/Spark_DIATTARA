@@ -18,9 +18,13 @@ if flowFile is not None:
         input_text = IOUtils.toString(inputStream, StandardCharsets.UTF_8)
         inputStream.close()
 
+        # Vérifier le contenu brut pour s'assurer que c'est bien une chaîne JSON
+        log.info(f"Contenu brut du flowFile: {input_text}")
+
         # Convertir le contenu du flowFile (JSON string) en dictionnaire Python
         try:
             json_data = json.loads(input_text)
+            log.info(f"Type de json_data après json.loads: {type(json_data)}")
         except json.JSONDecodeError as e:
             raise ValueError("Le contenu du flowFile n'est pas un JSON valide: " + str(e))
 
@@ -87,6 +91,5 @@ if flowFile is not None:
         session.transfer(flowFile, REL_SUCCESS)
     
     except Exception as e:
-        # En cas d'erreur, transférer le flowFile à la relation d'échec
         log.error("Erreur dans le traitement du flowFile : " + str(e))
         session.transfer(flowFile, REL_FAILURE)
