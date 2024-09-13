@@ -32,9 +32,52 @@ class FunctionClass:
         return False
 
 
+# Fonction pour traiter chaque règle individuellement (logique actuelle de la boucle)
+def process_rule_individual(rule_str, json_data):
+    # Séparer la règle en fonction, colonnes, et potentiellement des arguments
+    rule_parts = rule_str.split('@')
+    function_name = rule_parts[0]  # Nom de la fonction
+    
+    # Récupérer la fonction pour l'utiliser dynamiquement
+    rule_function = getattr(FunctionClass, function_name)
+    
+    # Récupérer les colonnes et arguments potentiels
+    column_arg_str = rule_parts[1]
+    
+    # Séparer les colonnes et les arguments par le séparateur '#'
+    column_arg_parts = column_arg_str.split('#')
+    
+    resultat = False
+    for part in column_arg_parts:
+        if '*' in part:
+            cols, arg = part.split('*')
+            # Il faut itérer sur chaque colonne pour appeler la fonction
+            for col in cols.split(','):  # cols peut être une liste séparée par des virgules
+                if rule_function(json_data, col):  # Si la fonction retourne True
+                    resultat = True
+                    break  # Si la fonction retourne True, on arrête cette itération des colonnes
+        else:
+            col = part
+            if rule_function(json_data, col):  # Vérification sans argument
+                resultat = True
+
+        if resultat:
+            break  # On sort de la boucle externe si un résultat True est trouvé
+
+    return resultat
+
+
+# Fonction principale
 def process_rule_nifi(rule_list_str_brute, json_data):
     # Lire l'attribut 'patternprocess' (liste de fonctions avec colonnes et éventuellement des arguments)
     rule_list_str = rule_list_str_brute.strip()
+
+    # Vérifier si la chaîne contient 'COMPUTE_SEPARATELY'
+    compute_separately = False
+    if 'COMPUTE_SEPARATELY' in rule_list_str:
+        compute_separately = True
+        # Supprimer 'COMPUTE_SEPARATELY' de la chaîne
+        rule_list_str = rule_list_str.replace('COMPUTE_SEPARATELY_', '').strip()
 
     # Supprimer les crochets [ et ] et diviser la chaîne par les virgules
     rule_list = rule_list_str.strip('[]').replace('"', '').split(',')
@@ -42,47 +85,27 @@ def process_rule_nifi(rule_list_str_brute, json_data):
     # Nettoyer les espaces autour de chaque fonction
     rule_list = [rule.strip() for rule in rule_list]
 
-    # Initialiser une variable pour stocker le résultat
     resultat = False
 
-    # Itérer sur chaque règle dans la liste
-    for rule_str in rule_list:
-        # Séparer la règle en fonction, colonnes, et potentiellement des arguments
-        rule_parts = rule_str.split('@')
-        function_name = rule_parts[0]  # Nom de la fonction
-        
-        # Récupérer la fonction pour l'utiliser dynamiquement
-        rule_function = getattr(FunctionClass, function_name)
-        
-        # Récupérer les colonnes et arguments potentiels
-        column_arg_str = rule_parts[1]
-        
-        # Séparer les colonnes et les arguments par le séparateur '#'
-        column_arg_parts = column_arg_str.split('#')
-        
-        args = []          
-        for part in column_arg_parts:
-            if '*' in part:
-                cols, arg = part.split('*')
-                # Il faut itérer sur chaque colonne pour appeler la fonction
-                for col in cols.split(','):  # cols peut être une liste séparée par des virgules
-                    if rule_function(json_data, col):  # Si la fonction retourne True
-                        resultat = True
-                        break  # Si la fonction retourne True, on arrête cette itération des colonnes
-            else:
-                col = part
-                if rule_function(json_data, col):  # Vérification sans argument
-                    resultat = True
-
+    if compute_separately:
+        # Logique actuelle pour chaque règle
+        for rule_str in rule_list:
+            resultat = process_rule_individual(rule_str, json_data)
             if resultat:
-                break  # On sort de la boucle externe si un résultat True est trouvé
-
-        if resultat:
-            break  # On arrête complètement si un True est trouvé pour n'importe quelle règle
+                break  # Arrêter si un résultat True est trouvé
+    else:
+        # Sinon, appeler une autre fonction que vous définirez plus tard
+        resultat = other_function(rule_list, json_data)
 
     # Convertir le résultat en 1 ou 0
     resultat_numeric = 1 if resultat else 0
     return resultat_numeric
+
+
+# Fonction placeholder pour être définie plus tard
+def other_function(rule_list, json_data):
+    # Logique à définir plus tard
+    pass
 
 
 # Fonction principale avec quelques tests
@@ -94,24 +117,10 @@ def main():
         "description": None
     }
 
-    json_data_2 = {
-        "id_content": 3,
-        "name": "",
-        "description": "Description non vide"
-    }
-
-    json_data_3 = {
-        "id_content": 4,
-        "name": "Valid Name",
-        "description": "Valid Description"
-    }
-
     # Liste des règles à appliquer sous forme de chaîne (patternprocess)
-    rule_list_str = '[CHECKNULL@name,FORCEDTRUE@description,CHECKNULL@description]'
+    rule_list_str = 'COMPUTE_SEPARATELY_CHECKNULL@name@description'
 
-    print("Test 1:", process_rule_nifi(rule_list_str, json_data_1))  # Devrait retourner 1 (CHECKNULL sur description)
-    print("Test 2:", process_rule_nifi(rule_list_str, json_data_2))  # Devrait retourner 1 (CHECKNULL sur name)
-    print("Test 3:", process_rule_nifi(rule_list_str, json_data_3))  # Devrait retourner 1 (FORCEDTRUE sur description)
+    print("Test 1:", process_rule_nifi(rule_list_str, json_data_1))  # Devrait appeler process_rule_individual
 
 
 if __name__ == "__main__":
