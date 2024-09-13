@@ -31,6 +31,16 @@ class FunctionClass:
     def FORCEDFALSE(json_data, column):
         return False
 
+    @staticmethod
+    def START_WITH(json_data, column, *args):
+        """Vérifie si la valeur dans 'column' commence par l'un des préfixes donnés"""
+        if column in json_data:
+            value = json_data[column]
+            if isinstance(value, str):
+                prefixes = args  # Les arguments sont les préfixes
+                return any(value.startswith(prefix) for prefix in prefixes)
+        return False
+
 
 # Fonction pour traiter chaque règle individuellement (logique actuelle de la boucle)
 def process_rule_individual(rule_str, json_data):
@@ -50,10 +60,11 @@ def process_rule_individual(rule_str, json_data):
     resultat = False
     for part in column_arg_parts:
         if '*' in part:
-            cols, arg = part.split('*')
+            cols, args = part.split('*')  # Séparer les colonnes et les arguments
+            args = args.split('|')  # Séparer les arguments par '|'
             # Il faut itérer sur chaque colonne pour appeler la fonction
             for col in cols.split(','):  # cols peut être une liste séparée par des virgules
-                if rule_function(json_data, col):  # Si la fonction retourne True
+                if rule_function(json_data, col, *args):  # Passer les arguments à la fonction
                     resultat = True
                     break  # Si la fonction retourne True, on arrête cette itération des colonnes
         else:
@@ -113,12 +124,12 @@ def main():
     # Exemple de données JSON à tester
     json_data_1 = {
         "id_content": 2,
-        "name": "Test",
-        "description": None
+        "name": "totoTest",
+        "description": "tataTest"
     }
 
     # Liste des règles à appliquer sous forme de chaîne (patternprocess)
-    rule_list_str = 'COMPUTE_SEPARATELY_CHECKNULL@name@description'
+    rule_list_str = 'COMPUTE_SEPARATELY_START_WITH@name*toto|Test@description*tata'
 
     print("Test 1:", process_rule_nifi(rule_list_str, json_data_1))  # Devrait appeler process_rule_individual
 
