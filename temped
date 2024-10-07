@@ -1,0 +1,16 @@
+s3_bucket_name_destination=1111
+s3_acceskey_destination=2222
+s3_secretkey_destination=3333
+selfbi_api_host=4444
+sql_server_hostname=555
+s3_bucket_name_source=666
+s3_acceskey_source=777
+s3_secretkey_source=888
+
+----------------------------------------------------------------------------
+s3_bucket_name=${s3_bucket_name_destination}
+s3_acceskey=${s3_acceskey_destination}
+s3_secretkey=${s3_secretkey_destination}
+s3_bucket_name_s=${s3_bucket_name_source}
+s3_acceskey_s=${s3_acceskey_source}
+s3_secretkey_s=${s3_secretkey_source}
