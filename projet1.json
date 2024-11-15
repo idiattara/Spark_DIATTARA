@@ -1,0 +1,125 @@
+{
+    "Etudiants": [
+        {
+            "IdEtu": "1ET",
+            "CodeFormation": "Thies@M1@GL",
+            "Annee": 2019,
+            "Bourse_Exel": 100000
+        }
+        ,
+        {
+            "IdEtu": "2ET",
+            "CodeFormation": "Thies@M1@MSD",
+            "Annee": 2020,
+            "Bourse_Exel": 150000
+        }
+        ,
+        {
+            "IdEtu": "1EUCAD",
+            "CodeFormation": "UCAD@L1@MPI",
+            "Annee": 2019,
+            "Bourse_Exel": 15000
+        }
+        ,
+        {
+            "IdEtu": "1ET",
+            "CodeFormation": "Thies@M1@MSD",
+            "Annee": 2020,
+            "Bourse_Exel": 140000
+        }
+        ,
+        {
+            "IdEtu": "4ET",
+            "CodeFormation": "Thies@L2@MATH",
+            "Annee": 2020,
+            "Bourse_Exel": 30000
+        }
+        ,
+        {
+            "IdEtu": "1EUGB",
+            "CodeFormation": "UGB@M1@GL",
+            "Annee": 2019,
+            "Bourse_Exel": 20000
+        }
+        ,
+        {
+            "IdEtu": "2EUGB",
+            "CodeFormation": "UGB@L3@LA",
+            "Annee": 2019,
+            "Bourse_Exel": 13000
+        }
+        ,
+        {
+            "IdEtu": "3EUGB",
+            "CodeFormation": "UGB@M1@SES",
+            "Annee": 2019,
+            "Bourse_Exel": 131000
+        }
+        ,
+        {
+            "IdEtu": "2EUCAD",
+            "CodeFormation": "UCAD@M1@MSD",
+            "Annee": 2017,
+            "Bourse_Exel": 10000
+        }
+        ,
+        {
+            "IdEtu": "3EUCAD",
+            "CodeFormation": "UCAD@M1@MATH",
+            "Annee": 2019,
+            "Bourse_Exel": 10000
+        }
+        ,
+        {
+            "IdEtu": "4EUCAD",
+            "CodeFormation": "UCAD@L2@MATH",
+            "Annee": 2019,
+            "Bourse_Exel": 33000
+        }
+        
+    ]
+    ,
+    "Profs": [
+        {
+            "IdProf": "1PT",
+            "CodeFormations": [
+                "Thies@M1@MSD",
+                "Thies@M2@MSD"
+            ]
+            ,
+            "Annee": 2019
+        }
+        ,
+        {
+            "IdProf": "2PT",
+            "CodeFormations": [
+                "Thies@L2@MATH",
+                "Thies@M1@GL"
+            ]
+            ,
+            "Annee": 2020
+        }
+        ,
+        {
+            "IdProf": "2PUGB",
+            "CodeFormations": [
+                "UGB@M1@GL"
+            ]
+            ,
+            "Annee": 2019
+        }
+        ,
+        {
+            "IdProf": "1PUCAD",
+            "CodeFormations": [
+                "UCAD@M1@MSD",
+                "UCAD@L2@MSD",
+                "UCAD@M1@MSD"
+            ]
+            ,
+            "Annee": 2017
+        }
+        
+    ]
+    
+}
