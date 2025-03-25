@@ -1,0 +1,28 @@
+CREATE OR REPLACE MODEL​
+
+  `ds39868.mydataset.mymodel`​
+
+OPTIONS​
+
+  (MODEL_TYPE='KMEANS',​
+
+   NUM_CLUSTERS=4 ,​
+
+    standardize_features = true) AS​
+
+SELECT longitude, latitude FROM `ds39868.mydataset.ub`​
+
+​
+
+SELECT * FROM ML.PREDICT(MODEL `ds39868.mydataset.mymodel`,(SELECT  * FROM  `ds39868.mydataset.ub` ))​
+
+​
+SELECT typeproduit,CENTROID_ID,sum(prix)as chiffre_affaire from  (SELECT * FROM ML.PREDICT(MODEL `ds39868.mydataset.mymodel`,​
+
+                         (SELECT  prix, typeproduit, CAST(REGEXP_EXTRACT(location ,'(.*)?,') as FLOAT64) as longitude, ​
+
+         CAST(REGEXP_EXTRACT(location ,',(.*)?') as FLOAT64) as latitude​
+
+ FROM  `ds39868.mydataset.mytabestreaming` ))) group by CENTROID_ID, typeproduit​
+
+​
