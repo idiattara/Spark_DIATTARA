@@ -1,0 +1,30 @@
+[
+  {
+    "operation": "shift",
+    "spec": {
+      "data": {
+        "*": {
+          "properties-client": {
+            "nomclient": "nomclient",
+            "telephoneClient": "telephoneClient",
+            "location": "locationClient"
+          },
+          "distance": "distance",
+           "confort": "confort",
+          "prix_travel": "prix_travel",
+          "properties-driver": {
+            "nomDriver": "nomDriver",
+            "location": "locationDriver",
+            "telephoneDriver": "telephoneDriver"
+          }
+        }
+      }
+    }
+  },
+  {
+    "operation": "modify-overwrite-beta",
+    "spec": {
+      "agent_timestamp": "${now():format("yyyy-MM-dd'T'HH:mm:ss'Z'", "GMT")}"
+    }
+  }
+]
