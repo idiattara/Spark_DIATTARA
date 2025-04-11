@@ -1,0 +1,22 @@
+Generate a private key named root.key
+$ openssl genrsa -out root.key
+
+-La commande permet de : 
+-Créer un certificat SSL (auto-signé ou signé par une CA)
+-Signer d'autres certificats si tu veux créer une autorité de certification (CA) => prouver qu’ils viennent bien de toi
+-Déchiffrer des données qui ont été chiffrées avec la clé publique correspondante
+
+$ openssl req -new -x509 -key root.key -out root.crt
+
+Permet de générer un certificat auto-signé X.509 à partir d’une clé privée existante (root.key)
+Country Name (2 letter code) [XX]:FR
+State or Province Name (full name) []:France
+Locality Name (eg, city) [Default City]:Clermont-Ferrand
+Organization Name (eg, company) [Default Company Ltd]:My Compagny
+Organizational Unit Name (eg, section) []:
+Common Name (eg, your name or your server's hostname) []:*mycompagny.com
+
+$ keytool -keystore kafka.truststore.jks -alias CARoot -import  -file root.crt
+Permet d'importer un certificat (ici, root.crt) dans un truststore Java (fichier kafka.truststore.jks), en l'associant à un alias (C
+
+$ keytool -keystore kafka01.keystore.jks -alias localhost -validity 365 -genkey -keyalg RSA -ext SAN=DNS:kafka01.mycompany.com
