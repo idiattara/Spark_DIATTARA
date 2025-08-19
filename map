@@ -1,0 +1,35 @@
+PUT /_index_template/template_diattara
+{
+   "index_patterns":"diattara*",
+   "template":{
+      "settings":{
+        "number_of_shards": 3,
+        "number_of_replicas": 2
+      },
+      "mappings":{
+        "properties":{
+           "location":{
+              "type":"geo_point"
+           },
+           "prix":{
+              "type":"long"
+           },
+           
+           "typeproduit" : {
+          "type" : "text",
+          "fields" : {
+            "keyword" : {
+              "type" : "keyword",
+              "ignore_above" : 256
+            }
+          }
+        },
+		"agent_timestamp": {
+          "type": "date",
+        "format": "yyyy-MM-dd_HHmmss||strict_date_time||strict_date_optional_time||epoch_millis||strict_date_optional_time_nanos"
+       }
+        } 
+   }
+   }
+   }
+   
