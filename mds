@@ -1,0 +1,20 @@
+curl -u mds-superuser:password "https://mds.example.com:8090/kafka/v3/clusters" -s | jq
+curl -u mds-superuser:password \
+  -X POST "https://mds.example.com:8090/security/1.0/roleBindings" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "principal": "User:svc-diattara",
+    "role": "DeveloperWrite",
+    "resourcePatterns": [
+      {
+        "resourceType": "Topic",
+        "name": "diattara",
+        "patternType": "LITERAL"
+      }
+    ],
+    "scope": {
+      "clusters": {
+        "kafka-cluster": "lkc-xxxxx"
+      }
+    }
+  }'
