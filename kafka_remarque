@@ -1,0 +1,36 @@
+Pourquoi ça arrive ?
+
+Quand tu crées un topic, Kafka choisit les réplicas de manière séquentielle selon partition.assignment.strategy.
+
+Si la distribution initiale n’était pas bien équilibrée, beaucoup de partitions ont le même broker en premier dans leur liste → donc le même preferred replica.
+
+🔹 Bonnes pratiques pour éviter ça
+
+Utiliser un rebalancer
+
+Confluent propose le Confluent Balancer :
+
+confluent-rebalancer execute --bootstrap-server broker1:9092 --throttle 100000000
+
+
+Il redistribue les leaders et les réplicas pour éviter la concentration.
+
+Contrôler la création des topics
+
+Utiliser un bon num.partitions et replication.factor.
+
+Vérifier la répartition des preferred replicas dès la création.
+
+Surveiller les métriques de leadership
+
+Métrique LeaderCount par broker.
+
+Si un broker est beaucoup plus chargé en leaders → déclencher un rebalance.
+
+🔹 Ce qu’il faut retenir
+
+La commande kafka-preferred-replica-election ne redistribue pas intelligemment : elle ne fait que ramener le leader sur le réplica préféré.
+
+Si ta config de topics a beaucoup de réplicas préférés sur un même broker, tu risques un déséquilibre.
+
+Pour équilibrer intelligemment, il faut un outil de rebalancing (Confluent Balancer ou kafka-reassign-partitions).
