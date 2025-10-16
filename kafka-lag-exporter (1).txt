@@ -1,0 +1,78 @@
+
+0---------------------------aller dans  opt--------------------------
+$  cd /opt 
+
+1---------------------Recuperation du paquet--------------------
+
+$ wget https://github.com/seglo/kafka-lag-exporter/releases/download/v0.7.1/kafka-lag-exporter-0.7.1.zip
+ unzip  kafka-lag-exporter-0.7.1.zip
+
+
+2----------------Creation fichier de conf dans  /etc/kafka-lag-exporter-0.7.1/conf----------------
+
+$ mkdir  -p /etc/kafka-lag-exporter-0.7.1/conf
+$ cd /etc/kafka-lag-exporter-0.7.1/conf
+$ nano kafka-lag-exporter.conf
+
+#########coller le contenu suivant
+
+kafka-lag-exporter {
+   poll-interval=10 seconds
+    kafka-client-timeout=10 seconds
+    reporters{
+           prometheus {
+           port = 8000
+         }
+    }
+
+ lookup-table-size = 120
+ metric-whitelist=["kafka_consumergroup_group_lag_seconds","kafka_consumergroup_group_lag"]
+  clusters = [
+    {
+      name = "a-cluster"
+      bootstrap-brokers = "13.93.107.194:9092"
+      group-blacklist=["^test.+", "^dev.+"]
+      consumer-properties = {
+        client.id = "consumer-client-id"
+      }
+      admin-client-properties = {
+        client.id = "admin-client-id"
+      }
+      labels = {
+        location = "ny"
+        zone = "us-east"
+      }
+    }
+  ]
+}
+
+
+3 --------------------------creation du  service--------------------------
+
+$ nano /etc/systemd/system/kafka-lag-exporter.service
+
+[Unit]
+Requires=network.target remote-fs.target
+After=network.target remote-fs.target
+
+[Service]
+Type=simple
+User=root
+Group=root
+Type=simple
+ExecStart=/opt/kafka-lag-exporter-0.7.1/bin/kafka-lag-exporter \
+        -Dconfig.file=/etc/kafka-lag-exporter-0.7.1/conf/kafka-lag-exporter.conf
+Environment=JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+
+[Install]
+WantedBy=multi-user.target
+
+4 -----start and enbale service
+$ systemctl  enable   kafka-lag-exporter
+$ systemctl  start    kafka-lag-exporter
+$ systemctl  status   kafka-lag-exporter
+
+5---test your API
+
+$ curl  http://localhost:8000/?name[]=kafka_consumergroup_group_lag
+
