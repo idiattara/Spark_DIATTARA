@@ -1,26 +1,57 @@
+kafka-lag-exporter {
+  # Fréquence de collecte et timeouts
+  poll-interval = 10 seconds
+  kafka-client-timeout = 10 seconds
 
-from confluent_kafka import Producer
+  # Exposition Prometheus
+  reporters {
+    prometheus {
+      port = 8000
+    }
+  }
 
-conf = {
-    'bootstrap.servers': 'LI0KFB01-BROK.domedi.local:9093,LI0KFB02-BROK.domedi.local:9093,LI0KFB03-BROK.domedi.local:9093',
-    'security.protocol': 'SASL_SSL',
-    'sasl.mechanisms': 'PLAIN',
-    'sasl.username': 'sa0KFSCHEMA-DEV',
-    'sasl.password': 'z$2(NTsq8g$zV@f9ZT',
-    'enable.ssl.certificate.verification': 'false'
-    'client.id': 'python-producer'
-}
+  # Mémoire interne & métriques exposées
+  lookup-table-size = 120
+  metric-whitelist = [
+    "kafka_consumergroup_group_lag_seconds",
+    "kafka_consumergroup_group_lag"
+  ]
 
-producer = Producer(conf)
+  clusters = [
+    {
+      name = "domedi-cluster"
 
-def delivery_report(err, msg):
-    if err is not None:
-        #print(f"Erreur de livraison: {err}"
-        print("Erreur de livraison: %s" % err)
-    else:
-        #print(f"Message livre dans {msg.topic()} [{msg.partition()}] @ offset {msg.offset()}")
-        print("Message livre dans %s [%s] @ offset %s" % (msg.topic(), msg.partition(), msg.offset()))
+      # Utilise bien les hostnames du listener CLIENT en 9093 (SASL_SSL)
+      bootstrap-brokers = "LI0KFB01-BROK.domedi.local:9093,LI0KFB02-BROK.domedi.local:9093,LI0KFB03-BROK.domedi.local:9093"
 
-# Envoi du message
-producer.produce('testibrahima', value='Bonjour Kafka !', callback=delivery_report)
-producer.flush(10)
+      # (Optionnel) Exclure certains consumer groups
+      group-blacklist = ["^test.+", "^dev.+"]
+
+      # --- Propriétés côté Consumer (utilisées par le lag exporter pour lire les offsets) ---
+      consumer-properties = {
+        client.id = "lag-exporter-consumer"
+
+        # Sécurité (comme ton producteur Python)
+        security.protocol = "SASL_SSL"
+        sasl.mechanism = "PLAIN"
+        sasl.jaas.config = "org.apache.kafka.common.security.plain.PlainLoginModule required username='sa0KFSCHEMA-DEV' password='z$2(NTsq8g$zV@f9ZT';"
+
+        # Forcer TLS 1.3 (cohérent avec tes brokers)
+        ssl.enabled.protocols = "TLSv1.3"
+
+        # --------- IMPORTANT ---------
+        # Reproduit exactement ton code Python :
+        # - désactive la vérification de certificat
+        # - et la vérification d'hostname (SNI)
+        # => Fonctionnel mais NON sécurisé (à remettre à true + truststore en prod)
+        enable.ssl.certificate.verification = false
+        ssl.endpoint.identification.algorithm = ""
+
+        # Si tu veux passer en mode sécurisé plus tard, commente les 2 lignes ci-dessus
+        # et fournis un truststore contenant la CA des brokers :
+        # ssl.truststore.location = "/etc/kafka/truststore.jks"
+        # ssl.truststore.password = "********"
+        # ssl.truststore.type = "JKS"
+      }
+
+      # ---
