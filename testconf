@@ -1,1 +1,26 @@
-hh
+
+from confluent_kafka import Producer
+
+conf = {
+    'bootstrap.servers': 'LI0KFB01-BROK.domedi.local:9093,LI0KFB02-BROK.domedi.local:9093,LI0KFB03-BROK.domedi.local:9093',
+    'security.protocol': 'SASL_SSL',
+    'sasl.mechanisms': 'PLAIN',
+    'sasl.username': 'sa0KFSCHEMA-DEV',
+    'sasl.password': 'z$2(NTsq8g$zV@f9ZT',
+    'enable.ssl.certificate.verification': 'false'
+    'client.id': 'python-producer'
+}
+
+producer = Producer(conf)
+
+def delivery_report(err, msg):
+    if err is not None:
+        #print(f"Erreur de livraison: {err}"
+        print("Erreur de livraison: %s" % err)
+    else:
+        #print(f"Message livre dans {msg.topic()} [{msg.partition()}] @ offset {msg.offset()}")
+        print("Message livre dans %s [%s] @ offset %s" % (msg.topic(), msg.partition(), msg.offset()))
+
+# Envoi du message
+producer.produce('testibrahima', value='Bonjour Kafka !', callback=delivery_report)
+producer.flush(10)
