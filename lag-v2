@@ -1,0 +1,48 @@
+kafka-lag-exporter {
+   poll-interval=10 seconds
+    kafka-client-timeout=10 seconds
+    reporters{
+           prometheus {
+           port = 8000
+         }
+    }
+
+ lookup-table-size = 120
+ metric-whitelist=["kafka_consumergroup_group_lag_seconds","kafka_consumergroup_group_lag"]
+  clusters = [
+    {
+      name = "a-cluster"
+      bootstrap-brokers = "51.77.156.14:9093"
+      group-blacklist=["^test.+", "^dev.+"]
+      consumer-properties = {
+        client.id = "consumer-client-id"
+        sasl.mechanism="PLAIN"
+        security.protocol="SASL_SSL"
+        ssl.truststore.location="/etc/kafka/kafka.truststore.jks"
+        ssl.truststore.password= "123456789"
+        ssl.keystore.password="123456789"
+        ssl.key.password="123456789"
+        ssl.keystore.location="/etc/kafka/kafka01.keystore.jks"
+        sasl.jaas.config="org.apache.kafka.common.security.plain.PlainLoginModule required username='admin' password='admin';"
+        ssl.endpoint.identification.algorithm=""
+      }
+      admin-client-properties = {
+        client.id = "admin-client-id",
+        sasl.mechanism="PLAIN"
+        security.protocol="SASL_SSL"
+        ssl.truststore.location="/etc/kafka/kafka.truststore.jks"
+        ssl.truststore.password= "123456789" 
+        ssl.keystore.password="123456789"
+        ssl.key.password="123456789"
+        ssl.keystore.location="/etc/kafka/kafka01.keystore.jks"
+        sasl.jaas.config="org.apache.kafka.common.security.plain.PlainLoginModule required username='admin' password='admin';"
+        ssl.endpoint.identification.algorithm=""
+
+      }
+      labels = {
+        location = "ny"
+        zone = "us-east"
+      }
+    }
+  ]
+}
