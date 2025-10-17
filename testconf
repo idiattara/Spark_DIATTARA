@@ -1,13 +1,17 @@
-root@LI0KFB01-BROK:/opt/lag_expoter/kafka-lag-exporter-0.7.1/kafka-lag-exporter-0.7.1/bin# cat test3.conf
+# Récupère la chaîne du broker
+openssl s_client -connect LI0KFB01-BROK.domedi.local:9093 \
+  -servername LI0KFB01-BROK.domedi.local -showcerts -tls1_3 </dev/null \
+  | sed -n '/BEGIN CERTIFICATE/,/END CERTIFICATE/p' > /etc/kafka/broker-chain.pem
+
+# Crée le truststore et importe la chaîne
+keytool -importcert -alias broker-chain -file /etc/kafka/broker-chain.pem \
+  -keystore /etc/kafka/truststore.jks -storepass changeit -noprompt
+
 kafka-lag-exporter {
   poll-interval = 10 seconds
   kafka-client-timeout = 10 seconds
 
-  reporters {
-    prometheus {
-      port = 8000
-    }
-  }
+  reporters { prometheus { port = 8000 } }
 
   lookup-table-size = 120
   metric-whitelist = [
@@ -22,31 +26,30 @@ kafka-lag-exporter {
       group-blacklist = ["^test.+", "^dev.+"]
 
       consumer-properties = {
-       client.id = "lag-exporter-consumer"
-       sasl.mechanism = "PLAIN"
-       security.protocol="SASL_SSL"
-       ssl.truststore.location = "empty-truststore.jks"
-       ssl.truststore.password = "changeit"
-       ssl.trustore.type = "JKS"
-       sasl.jaas.config = "org.apache.kafka.common.security.plain.PlainLoginModule required username='sa0KFSCHEMA-DEV' password='z$2(NTsq8g$zV@f9ZT';"
-       ssl.endpoint.identification.algorithm = ""
+        client.id = "lag-exporter-consumer"
+        security.protocol = "SASL_SSL"
+        sasl.mechanism = "PLAIN"
+        sasl.jaas.config = "org.apache.kafka.common.security.plain.PlainLoginModule required username='sa0KFSCHEMA-DEV' password='z$2(NTsq8g$zV@f9ZT';"
+        ssl.enabled.protocols = "TLSv1.3"
+        ssl.truststore.location = "/etc/kafka/truststore.jks"
+        ssl.truststore.password = "changeit"
+        ssl.truststore.type = "JKS"
+        ssl.endpoint.identification.algorithm = ""
       }
 
       admin-client-properties = {
         client.id = "lag-exporter-admin"
+        security.protocol = "SASL_SSL"
         sasl.mechanism = "PLAIN"
-        security.protocol="SASL_SSL"
-        ssl.truststore.location = "empty-truststore.jks"
-        ssl.truststore.password = "changeit"
-        ssl.trustore.type = "JKS"
         sasl.jaas.config = "org.apache.kafka.common.security.plain.PlainLoginModule required username='sa0KFSCHEMA-DEV' password='z$2(NTsq8g$zV@f9ZT';"
+        ssl.enabled.protocols = "TLSv1.3"
+        ssl.truststore.location = "/etc/kafka/truststore.jks"
+        ssl.truststore.password = "changeit"
+        ssl.truststore.type = "JKS"
         ssl.endpoint.identification.algorithm = ""
       }
 
-      labels = {
-        location = "ny"
-        zone = "us-east"
-      }
+      labels = { location = "ny", zone = "us-east" }
     }
   ]
 }
