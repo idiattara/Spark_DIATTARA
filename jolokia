@@ -1,0 +1,30 @@
+il faut  open jdk  (sudo apt install openjdk-11-jdk)
+Service]
+Environment="KAFKA_OPTS=-javaagent:/opt/jolokia-jvm-1.7.1.jar=host=0.0.0.0,port=8778"
+Pas besoin de -Dcom.sun.management.jmxremote pour Jolokia agent HTTP.
+
+Recharge + redémarre :
+
+bash
+Copier le code
+sudo systemctl daemon-reload
+sudo systemctl restart confluent-server
+Vérifie :
+
+bash
+Copier le code
+curl http://localhost:8778/jolokia/versio
+java -jar /opt/jolokia-jvm-1.6.2-agent.jar start $PID --host localhost
+
+ou
+
+java -jar  jolokia-jvm-1.7.1.jar  start $PID --host 0.0.0.0
+
+
+test curl  http://localhost:8778/jolokia/read/kafka.server:name=MessagesInPerSec,topic=sarr,type=BrokerTopicMetrics | python -m json.tool
+
+test  http://51.77.212.74:8778/jolokia/read/kafka.server:name=MessagesInPerSec,topic=sarr,type=BrokerTopicMetrics
+
+ curl -s 'http://localhost:8778/jolokia/list' | jq '.value | keys'
+
+curl 'http://localhost:8778/jolokia/read/kafka.server:type=BrokerTopicMetrics,name=MessagesInPerSec' | python -m json.tool
