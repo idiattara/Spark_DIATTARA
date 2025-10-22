@@ -3,6 +3,15 @@ Service]
 Environment="KAFKA_OPTS=-javaagent:/opt/jolokia-jvm-1.7.1.jar=host=0.0.0.0,port=8778"
 Pas besoin de -Dcom.sun.management.jmxremote pour Jolokia agent HTTP.
 
+wget https://repo1.maven.org/maven2/io/prometheus/jmx/jmx_prometheus_javaagent/0.20.0/jmx_prometheus_javaagent-0.20.0.jar -O /opt/JMX/jmx_prometheus_javaagent.jar
+Environment="KAFKA_OPTS=-Djdk.tls.ephemeralDHKeySize=2048 -javaagent:/opt/JMX/jmx_prometheus_javaagent.jar=8079:/opt/JMX/kafka.yml"
+http://kafkabok3.westeurope.cloudapp.azure.com:8079/metrics
+[Service]
+Environment="KAFKA_HEAP_OPTS=-Xms6g -Xmx6g -XX:MetaspaceSize=96m -XX:+UseG1GC -XX:MaxGCPauseMillis=20 -XX:InitiatingHeapOccupancyPercent=35 -XX:G1HeapRegionSize=16M -XX:MinMetaspaceFreeRatio=50 -XX:MaxMetaspaceFreeRatio=80"
+Environment="KAFKA_OPTS=-Djdk.tls.ephemeralDHKeySize=2048 -Djava.security.auth.login.config=/etc/kafka/kafka_server_jaas.conf -javaagent:/opt/prometheus/jmx_prometheus_javaagent.jar=8079:/opt/prometheus/kafka.yml"
+Environment="KAFKA_LOG4J_OPTS=-Dlog4j.configuration=file:/etc/kafka/log4j.properties"
+Environment="LOG_DIR=/var/log/kafka"
+
 Recharge + redémarre :
 
 bash
