@@ -1,0 +1,79 @@
+
+
+---- Telecharger le Zip qui contient le jar du connecteur et ses dependance  apres avoir installer KC-----
+
+$ curl http://contkcksql.westeurope.cloudapp.azure.com:8083/
+$ Telacharger https://www.confluent.io/hub/confluentinc/kafka-connect-elasticsearch
+
+$ unzip confluentinc-kafka-connect-elasticsearch-15.0.2.zip -d /usr/share/java/
+
+$ systemctl restart kafka-connect
+
+$ curl http://contkcksql.westeurope.cloudapp.azure.com:8083/
+
+$ curl -s http://contkcksql.westeurope.cloudapp.azure.com:8083/connector-plugins | jq
+
+
+
+
+---- Creation index dans elastic-----------
+
+
+PUT /_index_template/niate
+{
+   "index_patterns":"niate*",
+   "template":{
+      "settings":{
+        "number_of_shards": 3,
+        "number_of_replicas": 2
+      },
+      "mappings":{
+        "properties":{
+		"agent_timestamp": {
+          "type": "date",
+        "format": "yyyy-MM-dd_HHmmss||strict_date_time||strict_date_optional_time||epoch_millis||strict_date_optional_time_nanos"
+       }
+        } 
+   }
+   }
+ }
+ 
+ PUT /niate
+ 
+ GET niate/_mapping
+ 
+ 
+
+---- Creation du  topic -----------------------------
+
+
+
+
+$ /opt/confluent/bin/kafka-topics   --create   --topic niate   --partitions 3   --replication-factor 2   --bootstrap-server kafkabok1.eastus.cloudapp.azure.com:9092
+
+
+
+----- utilise kcat pour pousser dans kafka mais de pref python ------------------------------------
+
+$ apt install kafkacat
+
+kafkacat -b kafkabok2.westeurope.cloudapp.azure.com:9092,kafkabok3.westeurope.cloudapp.azure.com:9092 \
+  -t niate -P <<EOF
+{"id": 1, "msg": "hello es sink", "agent_timestamp": "$(date -u +"%Y-%m-%dT%H:%M:%SZ")"}
+EOF
+
+
+---- Creation du Job pull from kafka and push elastic-----
+
+curl -s -X PUT http://localhost:8083/connectors/es-sink-niate/config -H "Content-Type: application/json" -d '{"connector.class":"io.confluent.connect.elasticsearch.ElasticsearchSinkConnector","tasks.max":"1","topics":"niate","topic.index.map":"niate:niate","connection.url":"http://clustersdaelatsic.eastus.cloudapp.azure.com:9200","connection.username":"elastic","connection.password":"changeme","key.ignore":"true","schema.ignore":"true","write.method":"upsert","behavior.on.null.values":"DELETE","value.converter":"org.apache.kafka.connect.json.JsonConverter","value.converter.schemas.enable":"false","behavior.on.malformed.documents":"warn","errors.tolerance":"all","errors.log.enable":"true","errors.deadletterqueue.topic.name":"dlq-es","errors.deadletterqueue.context.headers.enable":"true","max.in.flight.requests":"1","batch.size":"2000","max.buffered.records":"20000","linger.ms":"1000","type.name":"_doc"}'
+
+
+$ curl -s http://localhost:8083/connectors/es-sink-niate/status | jq
+
+$ journalctl -u kafka-connect -n 200 --no-pager | egrep -i "ERROR|Elasticsearch|Auth|niate|niate"     # logs worker
+
+
+$ http://clustersdaelatsic.eastus.cloudapp.azure.com:9200/niate/_search?size=100&pretty
+
+$ Aller dans Kibana
+
