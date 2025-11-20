@@ -1,1 +1,27 @@
-gg
+kafka_controllers:
+  hosts:
+    LH0LKS01-BROK.domedi.local:
+      node_id: 1
+    LH0LKS02-BROK.domedi.local:
+      node_id: 2
+    LH0LKS03-BROK.domedi.local:
+      node_id: 3
+
+kafka_brokers:
+  hosts:
+    LH0LKS01-BROK.domedi.local:
+      node_id: 1
+    LH0LKS02-BROK.domedi.local:
+      node_id: 2
+    LH0LKS03-BROK.domedi.local:
+      node_id: 3
+
+kafka_connect:
+  hosts:
+    LH0LKB01-CONN.domedi.local:
+    LH0LKB02-CONN.domedi.local:
+
+kafka:
+  children:
+    kafka_controllers:
+    kafka_brokers:
