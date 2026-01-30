@@ -1,0 +1,49 @@
+Porocedure renouvelleme License
+
+Il est imperative de renouveller les lisense de confluent sinon on aura plus  accesé à certaines  fonctionalité commme le controle center
+
+renouvelleme lisene Broker :
+
+1 Se connecter en SSH  sur chaque broker de chauque environnement
+liste des broker!
+Inetgration:
+LI0KFB01-BROK.domedi.local
+LI0KFB02-BROK.domedi.local
+LI0KFB03-BROK.domedi.local
+Recette:
+LR0KFB01-BROK.domedi.local
+LR0KFB02-BROK.domedi.local
+LR0KFB03-BROK.domedi.local
+LR0KFB04-BROK.domedi.local
+Production:
+LP0KFB01-BROK.domedi.local
+LP0KFB02-BROK.domedi.local
+LP0KFB03-BROK.domedi.local
+LP0KFB04-BROK.domedi.local
+
+1Se mettre en root avec sudo su root
+2 Verifier si le broker est bien demarer par systemctl status confluent-server
+3 arreter le broker par la commande systemctl stop confluent-server
+4 dans le fichier /etc/kafka/server.properties remplacer la valeur  parmettre confluent.license par la nouvelle clé 
+5 Demarer le broker systemctl start confluent-server
+5 Verifier si le broker est bien demarer systemctl status  confluent-server
+
+Renouvellement license Controler Center 
+
+1 Se mettre en root avec sudo su root
+2 Se connecter en SSH  sur chaque controler center 
+3 Verifier si le controler  est bien demarer par systemctl status confluent-control-center
+4 arreter le controle center par la commande systemctl stop confluent-control-center
+5 dans le fichier /etc/confluent-control-center/control-center-production.properties  remplacer la valeur  parmettre confluent.license par la nouvelle clé 
+6 Demarer le controle center  systemctl start confluent-control-center
+7 Verifier si le controle est bien demarer systemctl status confluent-control-center
+8  Pour verifier Si la procedure a bien fonctionne on se connecter sur l interface controle Centre on de ne doit pas voir une alerte 
+votre license expire dans X jours 
+Les secret sont dans https://secretserver/app/#/secrets/view/folder/944
+
+liste des controle centres
+integration:https://li0kfb01-cont.domedi.local:9021/login
+recette:https://lr0kfb01-cont.domedi.local:9021/login
+Production:https://lp0kfb01-cont.domedi.local:9021/login
+ou 
+Voir les log dans les machine broker avec  la commande  grep -iE "License for control-center expires in 2 days" /var/log/kafka/*.log
