@@ -1,0 +1,36 @@
+from google.cloud import bigquery
+from google.oauth2 import service_account
+from datetime import datetime, UTC
+
+project_id = "composed-maxim-490014-i7"
+table_id = "diattara.produits"
+key_path = "/content/composed-maxim-490014-i7-cf60a6c41bb5.json"
+
+credentials = service_account.Credentials.from_service_account_file(key_path)
+
+client = bigquery.Client(
+    credentials=credentials,
+    project=project_id
+)
+
+rows_to_insert = [
+    {
+        "location": "Paris",
+        "prix": 10.5,
+        "type_produit": "fruit",
+        "agent_timestamp": datetime.now(UTC).isoformat()
+    },
+    {
+        "location": "Lyon",
+        "prix": 20.75,
+        "type_produit": "legume",
+        "agent_timestamp": datetime.now(UTC).isoformat()
+    }
+]
+
+errors = client.insert_rows_json(table_id, rows_to_insert)
+
+if not errors:
+    print("Insertion réussie")
+else:
+    print("Erreurs :", errors)
