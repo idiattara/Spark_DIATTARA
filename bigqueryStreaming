@@ -2,8 +2,8 @@ from google.cloud import bigquery
 from google.oauth2 import service_account
 from datetime import datetime, UTC
 
-project_id = "composed-maxim-490014-i7"
-table_id = "diattara.produits"
+project_id = "diattara-490108"
+table_id = "mosefdata.streamingsell"
 key_path = "/content/composed-maxim-490014-i7-cf60a6c41bb5.json"
 
 credentials = service_account.Credentials.from_service_account_file(key_path)
@@ -15,15 +15,15 @@ client = bigquery.Client(
 
 rows_to_insert = [
     {
-        "location": "Paris",
+        "location": "14.76, -14.76",
         "prix": 10.5,
-        "type_produit": "fruit",
+        "typeproduit": "fruit",
         "agent_timestamp": datetime.now(UTC).isoformat()
     },
     {
-        "location": "Lyon",
+        "location": "10.76, -14.76",
         "prix": 20.75,
-        "type_produit": "legume",
+        "typeproduit": "legume",
         "agent_timestamp": datetime.now(UTC).isoformat()
     }
 ]
