@@ -1,0 +1,21 @@
+SELECT
+  CENTROID_ID AS centroid,
+  typeproduit,
+  SUM(prix) AS chiffre_affaire
+FROM ML.PREDICT(
+  MODEL `mosefdata.kmeansmodele`,
+  (
+    SELECT
+      CAST(REGEXP_EXTRACT(location, r'(.*)?,') AS FLOAT64) AS lon,
+      CAST(REGEXP_EXTRACT(location, r',(.*)?') AS FLOAT64) AS lat,
+      prix,
+      typeproduit
+    FROM `mosefdata.streamingsell`
+  )
+)
+GROUP BY
+  centroid,
+  typeproduit
+ORDER BY
+  centroid,
+  chiffre_affaire DESC;
